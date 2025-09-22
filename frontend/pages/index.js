@@ -5,6 +5,7 @@ import { useStore } from '../store/useStore'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Container from '../components/ui/Container'
 
 const fetcher = url => fetch(url).then(r => r.json())
 
@@ -19,7 +20,7 @@ export default function Home() {
     const filtered = courses.filter(c => c.title.toLowerCase().includes(query.toLowerCase()) || (c.description || '').toLowerCase().includes(query.toLowerCase()))
 
     return (
-        <div className="min-h-screen bg-dark-900 text-white">
+        <div className="min-h-screen md:pt-16 pt-8 bg-dark-900 text-white">
             <header>
                 <div className="w-full flex flex-col md:flex-row items-center gap-8">
                     <div className="flex-1">

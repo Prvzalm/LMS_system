@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import VideoPlayer from '../components/VideoPlayer'
 import { useStore } from '../store/useStore'
 import Link from 'next/link';
-import Container from '../components/ui/Container'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import { getToken } from '../utils/auth'
@@ -50,24 +49,21 @@ export default function Dashboard() {
         })()
     }, [user]);
 
-    if (loading) return <Container><div className="text-center py-12">Loading your courses...</div></Container>
+    if (loading) return <div className="text-center py-12">Loading your courses...</div>
     if (!user) return (
-        <Container>
-            <div className="text-center py-12">
-                <h1 className="text-3xl font-bold mb-4 text-white">Your Dashboard</h1>
-                <p className="mb-6 text-gray-300">Please <Link href="/login" className="text-orange-500 hover:text-orange-400">log in</Link> to see your purchased courses.</p>
-            </div>
-        </Container>
+        <div className="text-center py-12">
+            <h1 className="text-3xl font-bold mb-4 text-white">Your Dashboard</h1>
+            <p className="mb-6 text-gray-300">Please <Link href="/login" className="text-orange-500 hover:text-orange-400">log in</Link> to see your purchased courses.</p>
+        </div>
     )
 
     return (
-        <Container>
+        <div className='md:pt-16 pt-8'>
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-white mb-2">Welcome back, {user.name}!</h1>
                 <p className="text-gray-300">Continue your learning journey with your purchased courses.</p>
             </div>
 
-            {/* Continue Learning */}
             {courses.length > 0 && (
                 <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-4">Continue Learning</h2>
@@ -94,7 +90,7 @@ export default function Dashboard() {
                     </div>
                 </div>
             )}
-        </Container>
+        </div>
     )
 }
 
