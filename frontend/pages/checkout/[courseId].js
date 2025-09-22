@@ -22,7 +22,7 @@ function CheckoutForm({ clientSecret, orderId }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-md p-4 bg-white rounded">
+        <form onSubmit={handleSubmit} className="max-w-md p-4 bg-dark-800 rounded">
             <CardElement />
             <button disabled={loading} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">Pay</button>
         </form>
@@ -59,7 +59,7 @@ export default function CheckoutPage() {
                     <CheckoutForm clientSecret={clientSecret} />
                 </Elements>
             ) : (
-                <div className="p-4 bg-white rounded">Set NEXT_PUBLIC_STRIPE_PUB in frontend .env.local to enable Stripe Elements.</div>
+                <div className="p-4 bg-dark-800 text-white rounded">Set NEXT_PUBLIC_STRIPE_PUB in frontend .env.local to enable Stripe Elements.</div>
             )}
         </Container>
     )

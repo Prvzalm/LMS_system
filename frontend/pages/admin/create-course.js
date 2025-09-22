@@ -137,12 +137,12 @@ function CreateCourseInner() {
                             <div className="w-full bg-gray-200 rounded-full h-2">
                                 <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${(step / 3) * 100}%` }}></div>
                             </div>
-                            <div className="text-sm text-gray-600 mt-1">Step {step} of 3</div>
+                            <div className="text-sm text-muted mt-1">Step {step} of 3</div>
                         </div>
                         <div className="mb-4 flex gap-2">
-                            <button className={"px-3 py-1 rounded " + (step === 1 ? 'bg-indigo-600 text-white' : 'bg-gray-100')} onClick={() => setStep(1)}>1. Details</button>
-                            <button className={"px-3 py-1 rounded " + (step === 2 ? 'bg-indigo-600 text-white' : 'bg-gray-100')} onClick={() => setStep(2)}>2. Lessons</button>
-                            <button className={"px-3 py-1 rounded " + (step === 3 ? 'bg-indigo-600 text-white' : 'bg-gray-100')} onClick={() => setStep(3)}>3. Review</button>
+                            <button className={"px-3 py-1 rounded " + (step === 1 ? 'bg-indigo-600 text-white' : 'bg-dark-800 text-white')} onClick={() => setStep(1)}>1. Details</button>
+                            <button className={"px-3 py-1 rounded " + (step === 2 ? 'bg-indigo-600 text-white' : 'bg-dark-800 text-white')} onClick={() => setStep(2)}>2. Lessons</button>
+                            <button className={"px-3 py-1 rounded " + (step === 3 ? 'bg-indigo-600 text-white' : 'bg-dark-800 text-white')} onClick={() => setStep(3)}>3. Review</button>
                         </div>
 
                         {step === 1 && (
@@ -166,16 +166,16 @@ function CreateCourseInner() {
                         {step === 2 && (
                             <div>
                                 <h3 className="font-semibold mb-2">Lessons / Video Upload</h3>
-                                <p className="text-sm text-gray-600 mb-4">Add lessons, upload videos and reorder them before publishing.</p>
+                                <p className="text-sm text-muted mb-4">Add lessons, upload videos and reorder them before publishing.</p>
 
                                 <div className="space-y-3">
                                     {lessons.map((ls, idx) => (
-                                        <div key={idx} className="p-3 border rounded bg-white">
+                                        <div key={idx} className="p-3 border rounded bg-dark-800 text-white">
                                             <div className="flex justify-between items-start">
                                                 <div className="font-medium">Lesson {idx + 1}</div>
                                                 <div className="flex items-center gap-2">
-                                                    <button type="button" onClick={() => moveLesson(idx, -1)} className="px-2 py-1 bg-gray-100 rounded">↑</button>
-                                                    <button type="button" onClick={() => moveLesson(idx, 1)} className="px-2 py-1 bg-gray-100 rounded">↓</button>
+                                                    <button type="button" onClick={() => moveLesson(idx, -1)} className="px-2 py-1 bg-dark-700 text-white rounded">↑</button>
+                                                    <button type="button" onClick={() => moveLesson(idx, 1)} className="px-2 py-1 bg-dark-700 text-white rounded">↓</button>
                                                     <button type="button" onClick={() => removeLesson(idx)} className="px-2 py-1 bg-red-50 text-red-600 rounded">Delete</button>
                                                 </div>
                                             </div>
@@ -225,7 +225,7 @@ function CreateCourseInner() {
                 <aside className="hidden md:block md:w-1/3">
                     <div className="bg-dark-800 p-4 rounded">
                         <h3 className="font-semibold">Quick help</h3>
-                        <p className="text-sm text-gray-600">Use steps to create a course. After creating, you can add lessons and upload videos in the lessons editor.</p>
+                        <p className="text-sm text-muted">Use steps to create a course. After creating, you can add lessons and upload videos in the lessons editor.</p>
                     </div>
                 </aside>
             </div>

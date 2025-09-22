@@ -67,6 +67,9 @@ body {
   --bg-dark-700: #e5e7eb;
   --border-dark-700: #e5e7eb;
   --text-white: #111827;
+  --text-gray-300: #d1d5db;
+  --text-gray-400: #9ca3af;
+  --text-muted: #8b93a3;
 }
 
 .dark {
@@ -75,6 +78,9 @@ body {
   --bg-dark-700: #0f1114;
   --border-dark-700: #0f1114;
   --text-white: #ffffff;
+  --text-gray-300: #9ca3af;
+  --text-gray-400: #6b7280;
+  --text-muted: #9ca3af;
 }
 
 /* Override a few utility classes so existing markup using bg-dark-* and text-white adapts */
@@ -92,4 +98,13 @@ body {
 }
 .text-white {
   color: var(--text-white) !important;
+}
+.text-gray-300 {
+  color: var(--text-gray-300) !important;
+}
+.text-gray-400 {
+  color: var(--text-gray-400) !important;
+}
+.text-muted {
+  color: var(--text-muted) !important;
 }

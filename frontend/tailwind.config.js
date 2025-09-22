@@ -12,7 +12,10 @@ module.exports = {
                 'dark-700': '#0f1114',
                 'accent': '#ffffff', // primary CTA will be white like Linear
                 'accent-2': '#06b6d4',
-                'muted': '#8b93a3'
+                'muted': {
+                    DEFAULT: '#8b93a3',
+                    dark: '#9ca3af' // lighter muted for dark mode
+                }
             },
             animation: {
                 'float': 'float 6s ease-in-out infinite'

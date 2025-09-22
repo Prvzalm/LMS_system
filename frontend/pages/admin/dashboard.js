@@ -20,20 +20,20 @@ function AdminDashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <motion.div whileHover={{ scale: 1.02 }}>
                     <Card>
-                        <div className="text-sm text-gray-500">Total Users</div>
-                        <div className="text-2xl font-semibold">{data?.totalUsers || 0}</div>
+                        <div className="text-sm text-muted">Total Users</div>
+                        <div className="text-2xl font-semibold text-white">{data?.totalUsers || 0}</div>
                     </Card>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.02 }}>
                     <Card>
-                        <div className="text-sm text-gray-500">Total Sales</div>
-                        <div className="text-2xl font-semibold">{data?.totalSales || 0}</div>
+                        <div className="text-sm text-muted">Total Sales</div>
+                        <div className="text-2xl font-semibold text-white">{data?.totalSales || 0}</div>
                     </Card>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.02 }}>
                     <Card>
-                        <div className="text-sm text-gray-500">Revenue</div>
-                        <div className="text-2xl font-semibold">${data?.revenue || 0}</div>
+                        <div className="text-sm text-muted">Revenue</div>
+                        <div className="text-2xl font-semibold text-white">${data?.revenue || 0}</div>
                     </Card>
                 </motion.div>
             </div>
@@ -42,7 +42,7 @@ function AdminDashboard() {
                 <h2 className="text-lg font-semibold mb-2">Top Courses</h2>
                 <ul className="space-y-2">
                     {(data?.topCourses || []).map(c => (
-                        <li key={c._id}><Card className="flex justify-between">{c.title}<span className="text-sm text-gray-600">{c.sales} sales</span></Card></li>
+                        <li key={c._id}><Card className="flex justify-between text-white"><span>{c.title}</span><span className="text-sm text-muted">{c.sales} sales</span></Card></li>
                     ))}
                 </ul>
             </div>
