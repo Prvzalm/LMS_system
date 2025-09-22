@@ -18,6 +18,7 @@ export default function CourseEditModal({ course, onClose, mode = 'edit' }) {
     const [lessonFiles, setLessonFiles] = useState([])
     const [lessonPreviews, setLessonPreviews] = useState([])
     const [loading, setLoading] = useState(false)
+    const [progress, setProgress] = useState(0)
 
     const uploadFile = async (file, resourceType = 'image') => {
         const form = new FormData();
@@ -69,17 +70,25 @@ export default function CourseEditModal({ course, onClose, mode = 'edit' }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
+        setProgress(0)
         try {
+            const totalUploads = (thumbnailFile ? 1 : 0) + imagesFiles.filter(f => f).length + lessonFiles.filter(f => f).length + 1
+            let current = 0
+
             let thumbUrl = course.thumbnail || ''
             if (thumbnailFile) {
                 const r = await uploadFile(thumbnailFile, 'image')
                 thumbUrl = r.secure_url || (r.result && r.result.secure_url) || thumbUrl
+                current++
+                setProgress((current / totalUploads) * 100)
             }
             const images = course.images ? [...course.images] : []
             for (const f of imagesFiles) {
                 if (!f) continue
                 const r = await uploadFile(f, 'image')
                 images.push(r.secure_url || (r.result && r.result.secure_url))
+                current++
+                setProgress((current / totalUploads) * 100)
             }
             const token = getToken()
             if (!token) throw new Error('Not authenticated')
@@ -87,6 +96,8 @@ export default function CourseEditModal({ course, onClose, mode = 'edit' }) {
                 method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ title, description, price, thumbnail: thumbUrl, images })
             })
             const data = await res.json()
+            current++
+            setProgress((current / totalUploads) * 100)
 
             // upload lessons videos and add them
             for (let i = 0; i < lessons.length; i++) {
@@ -96,6 +107,8 @@ export default function CourseEditModal({ course, onClose, mode = 'edit' }) {
                 if (file) {
                     const r = await uploadFile(file, 'video')
                     videoUrl = r.secure_url || (r.result && r.result.secure_url) || ''
+                    current++
+                    setProgress((current / totalUploads) * 100)
                 }
                 if (ls.title && videoUrl) {
                     await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/admin/courses/' + course._id + '/lessons', {
@@ -190,6 +203,15 @@ export default function CourseEditModal({ course, onClose, mode = 'edit' }) {
                         <Button variant="ghost" type="button" onClick={handleAddLesson}>+ Add lesson</Button>
                     </div>
                 </div>
+
+                {loading && (
+                    <div className="mt-4">
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${progress}%` }}></div>
+                        </div>
+                        <div className="text-sm text-gray-600 mt-1">Uploading... {Math.round(progress)}%</div>
+                    </div>
+                )}
 
                 <div className="flex gap-2 justify-end">
                     <Button variant="secondary" onClick={onClose}>Cancel</Button>

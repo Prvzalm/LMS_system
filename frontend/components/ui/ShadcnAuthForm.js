@@ -31,19 +31,14 @@ export default function ShadcnAuthForm({ mode = 'login', admin = false }) {
             const data = await res.json()
             if (data.token) {
                 setToken(data.token)
-                // set user in global store so header/profile update immediately
-                if (data.user) {
-                    try { setUser(data.user) } catch (e) { }
-                } else {
-                    // If backend didn't return user payload, attempt to fetch /auth/me
-                    try {
-                        const me = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/auth/me', { headers: { Authorization: 'Bearer ' + data.token } })
-                        if (me.ok) {
-                            const ju = await me.json()
-                            if (ju) try { setUser(ju) } catch (e) { }
-                        }
-                    } catch (e) { }
-                }
+                // Always fetch user data from /me to get complete profile including isAdmin
+                try {
+                    const me = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/auth/me', { headers: { Authorization: 'Bearer ' + data.token } })
+                    if (me.ok) {
+                        const ju = await me.json()
+                        if (ju.user) setUser(ju.user)
+                    }
+                } catch (e) { }
                 toast.success(isSignup ? 'Account created' : 'Signed in')
                 // after auth, go to dashboard or admin area when appropriate
                 const target = admin ? '/admin/dashboard' : (isSignup ? '/dashboard' : (router.pathname.startsWith('/admin') ? '/admin/dashboard' : '/dashboard'))

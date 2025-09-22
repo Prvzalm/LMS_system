@@ -46,4 +46,18 @@ router.post('/avatar', auth, upload.single('file'), async (req, res, next) => {
     } catch (err) { next(err); }
 });
 
+// Update user profile
+router.put('/profile', auth, async (req, res, next) => {
+    try {
+        const { name } = req.body;
+        const User = require('../models/User');
+        const user = await User.findById(req.user._id);
+        if (name) user.name = name;
+        await user.save();
+        const safe = user.toObject();
+        delete safe.password;
+        res.json({ user: safe });
+    } catch (err) { next(err); }
+});
+
 module.exports = router;

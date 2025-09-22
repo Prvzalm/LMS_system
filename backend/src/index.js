@@ -9,6 +9,7 @@ const uploadRoutes = require('./routes/upload');
 const userRoutes = require('./routes/user');
 const paymentRoutes = require('./routes/payments');
 const contactRoutes = require('./routes/contact');
+const progressRoutes = require('./routes/progress');
 const passport = require('passport');
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use('/api/admin', uploadRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/progress', progressRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err);

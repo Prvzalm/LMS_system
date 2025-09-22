@@ -61,4 +61,38 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     }
 });
 
+// Simple buy API for testing (marks as paid immediately)
+router.post('/buy/:courseId', auth, async (req, res, next) => {
+    try {
+        const course = await Course.findById(req.params.courseId);
+        if (!course) return res.status(404).json({ error: 'Course not found' });
+
+        // Check if already purchased
+        const User = require('../models/User');
+        const user = await User.findById(req.user._id);
+        if (user.purchasedCourses.some(id => id.toString() === course._id.toString())) {
+            return res.status(400).json({ error: 'Course already purchased' });
+        }
+
+        // Create order as paid
+        const order = new Order({
+            user: req.user._id,
+            course: course._id,
+            amount: course.price,
+            status: 'paid',
+            paymentProvider: 'test'
+        });
+        await order.save();
+
+        // Add to user purchased courses
+        user.purchasedCourses.push(course._id);
+        await user.save();
+
+        // Increment course sales
+        await Course.findByIdAndUpdate(course._id, { $inc: { sales: 1 } });
+
+        res.json({ success: true, orderId: order._id, message: 'Course purchased successfully' });
+    } catch (err) { next(err); }
+});
+
 module.exports = router;

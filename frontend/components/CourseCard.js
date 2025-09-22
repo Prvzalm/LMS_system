@@ -2,8 +2,12 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Card from './ui/Card'
 import Button from './ui/Button'
+import { useStore } from '../store/useStore'
 
 export default function CourseCard({ course, onEdit, onView }) {
+    const convertPrice = useStore(state => state.convertPrice)
+    const currencySymbol = useStore(state => state.currencySymbol)
+
     return (
         <motion.div whileHover={{ y: -6 }}>
             <Card className="overflow-hidden p-0">
@@ -12,7 +16,7 @@ export default function CourseCard({ course, onEdit, onView }) {
                     <h3 className="font-medium text-lg text-white">{course.title}</h3>
                     <p className="text-sm text-muted line-clamp-2 mt-1">{course.description || ''}</p>
                     <div className="mt-3 flex items-center justify-between">
-                        <div className="text-lg font-medium text-muted">${course.price}</div>
+                        <div className="text-lg font-medium text-muted">{currencySymbol}{convertPrice(course.price)}</div>
                         <div className="flex gap-2">
                             {onView ? <Button variant="ghost" onClick={() => onView(course)}>View</Button> : <Link href={'/courses/' + course._id}><Button variant="ghost">View</Button></Link>}
                             {onEdit && <Button variant="ghost" onClick={() => onEdit(course)}>Edit</Button>}

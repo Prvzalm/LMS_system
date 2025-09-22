@@ -11,6 +11,7 @@ import Toast from '../components/ui/Toast'
 
 function MyApp({ Component, pageProps, router }) {
     const setUser = useStore(state => state.setUser)
+    const initCurrency = useStore(state => state.initCurrency)
 
     // hydrate user once on client when app mounts to avoid repeated token checks
     useEffect(() => {
@@ -24,6 +25,12 @@ function MyApp({ Component, pageProps, router }) {
             } catch (e) { /* ignore - user remains null */ }
         })()
     }, [])
+
+    // init currency on app load
+    useEffect(() => {
+        initCurrency()
+    }, [])
+
     const isHome = router.route === '/'
     return (
         <div>
