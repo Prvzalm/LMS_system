@@ -11,10 +11,12 @@ const paymentRoutes = require('./routes/payments');
 const contactRoutes = require('./routes/contact');
 const progressRoutes = require('./routes/progress');
 const passport = require('passport');
+const path = require('path');
 
 dotenv.config();
 
 const app = express();
+app.use(express.static(path.join(__dirname, '/frontend')));
 app.use(cors());
 app.use(express.json());
 // Initialize passport (used for OAuth strategies)
@@ -33,6 +35,10 @@ app.use('/api/user', userRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/progress', progressRoutes);
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
 
 app.use((err, req, res, next) => {
     console.error(err);
