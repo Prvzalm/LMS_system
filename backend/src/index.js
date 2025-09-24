@@ -16,27 +16,7 @@ const path = require('path');
 dotenv.config();
 
 const app = express();
-app.use(express.static(path.join(__dirname, '/frontend')));
-const allowedOrigins = [process.env.FRONTEND_URL || 'https://lms-system-ten.vercel.app', 'http://localhost:3000'];
-app.use(cors({
-    origin: function (origin, callback) {
-        // allow requests with no origin (like curl or server-to-server)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
-}));
-
-// Ensure preflight responses include authorization header allowance
-app.options('*', (req, res) => {
-    res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, Accept');
-    res.sendStatus(200);
-});
+app.use(cors());
 app.use(express.json());
 // Initialize passport (used for OAuth strategies)
 require('./utils/passport');
@@ -55,8 +35,12 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/progress', progressRoutes);
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '/frontend/out')));
+}
+
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'out', 'index.html'));
 });
 
 app.use((err, req, res, next) => {
