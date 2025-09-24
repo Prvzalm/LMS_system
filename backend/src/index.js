@@ -36,11 +36,11 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/progress', progressRoutes);
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../../frontend/out')));
+    app.use(express.static(path.join(__dirname, '../../frontend')));
 }
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend', 'out', 'index.html'));
+    res.sendFile(path.join(__dirname, '../../frontend', 'index.html'));
 });
 
 app.use((err, req, res, next) => {
