@@ -17,10 +17,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.static(path.join(__dirname, '/frontend')));
-app.use(cors({
-    origin: true,
-    credentials: false
-}));
+app.use(cors());
 app.use(express.json());
 // Initialize passport (used for OAuth strategies)
 require('./utils/passport');
