@@ -17,7 +17,10 @@ dotenv.config();
 
 const app = express();
 app.use(express.static(path.join(__dirname, '/frontend')));
-app.use(cors());
+app.use(cors({
+    origin: 'https://lms-system-4h7ii7l7d-parvezalam.vercel.app',
+    credentials: true
+}));
 app.use(express.json());
 // Initialize passport (used for OAuth strategies)
 require('./utils/passport');
