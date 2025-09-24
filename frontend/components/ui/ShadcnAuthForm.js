@@ -55,16 +55,7 @@ export default function ShadcnAuthForm({ mode = 'login', admin = false }) {
     }
 
     const handleSocial = (provider) => {
-        // Attempt to open backend OAuth route which should redirect to provider
-        // If backend route not present, user will see a 404 — backend changes required for full OAuth support.
-        const api = process.env.NEXT_PUBLIC_API_URL || ''
-        // common backend endpoints: /auth/github, /auth/google
-        if (api) {
-            // redirect the browser to backend endpoint (backend should handle redirect to provider)
-            window.location.href = `${api}/auth/${provider}`
-            return
-        }
-        alert('OAuth not configured. Please provide backend OAuth endpoints.')
+        window.location.href = `${api}/auth/${provider}`
     }
 
     return (
