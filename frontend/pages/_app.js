@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps, router }) {
         if (!token) return
         (async () => {
             try {
-                const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/auth/me')
+                const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/auth/me')
                 const data = await res.json()
                 if (data && data.user) setUser(data.user)
             } catch (e) { /* ignore - user remains null */ }

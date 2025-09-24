@@ -19,7 +19,7 @@ export default function AuthSuccess() {
             // fetch and hydrate user immediately so Header updates without refresh
             ; (async () => {
                 try {
-                    const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/auth/me', { headers: { Authorization: 'Bearer ' + token } })
+                    const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/auth/me', { headers: { Authorization: 'Bearer ' + token } })
                     const data = await res.json()
                     if (data && data.user) {
                         setUser(data.user)

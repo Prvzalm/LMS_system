@@ -30,7 +30,7 @@ export default function Dashboard() {
                 // fetch each course in background and update when ready
                 purchased.forEach(async (id, idx) => {
                     try {
-                        const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/courses/' + (typeof id === 'string' ? id : id._id))
+                        const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/courses/' + (typeof id === 'string' ? id : id._id))
                         const json = await res.json()
                         setCourses(prev => {
                             const copy = [...prev]
@@ -107,7 +107,7 @@ function CourseCard({ course, convertPrice, currencySymbol }) {
     const loadProgress = async () => {
         setLoadingProgress(true);
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/progress/${course._id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${course._id}`, {
                 headers: {
                     'Authorization': `Bearer ${getToken()}`
                 }
@@ -234,7 +234,7 @@ function ContinueLearningCard({ course, convertPrice, currencySymbol }) {
 
     const loadNextLesson = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/progress/${course._id}/next-lesson`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${course._id}/next-lesson`, {
                 headers: {
                     'Authorization': `Bearer ${getToken()}`
                 }

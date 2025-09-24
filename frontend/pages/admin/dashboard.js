@@ -11,7 +11,7 @@ import { authFetch } from '../../utils/auth'
 const fetcher = url => authFetch(url).then(r => r.json())
 
 function AdminDashboard() {
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_API_URL + '/admin/stats', fetcher)
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_API_URL + '/api/admin/stats', fetcher)
 
     if (error) return <Container>Failed to load</Container>
     return (

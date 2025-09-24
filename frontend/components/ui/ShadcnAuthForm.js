@@ -33,7 +33,7 @@ export default function ShadcnAuthForm({ mode = 'login', admin = false }) {
                 setToken(data.token)
                 // Always fetch user data from /me to get complete profile including isAdmin
                 try {
-                    const me = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/auth/me', { headers: { Authorization: 'Bearer ' + data.token } })
+                    const me = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/auth/me', { headers: { Authorization: 'Bearer ' + data.token } })
                     if (me.ok) {
                         const ju = await me.json()
                         if (ju.user) setUser(ju.user)

@@ -96,7 +96,7 @@ function AvatarUploader() {
             const form = new FormData()
             form.append('file', file)
             form.append('folder', 'profilePics')
-            const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/user/avatar', {
+            const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/user/avatar', {
                 method: 'POST',
                 headers: { Authorization: 'Bearer ' + (getToken() || '') },
                 body: form
@@ -150,7 +150,7 @@ function ProfileAvatarEditor() {
             const form = new FormData()
             form.append('file', file)
             form.append('folder', 'profilePics')
-            const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/user/avatar', {
+            const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/user/avatar', {
                 method: 'POST',
                 headers: { Authorization: 'Bearer ' + (getToken() || '') },
                 body: form

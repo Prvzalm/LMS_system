@@ -40,7 +40,7 @@ export default function CheckoutPage() {
         const run = async () => {
             const token = getToken();
             if (!token) return alert('Please login first')
-            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/create-intent/${courseId}`, { method: 'POST' });
+            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments/create-intent/${courseId}`, { method: 'POST' });
             const data = await res.json();
             if (data.clientSecret) setClientSecret(data.clientSecret);
             // load stripe publishable key from env

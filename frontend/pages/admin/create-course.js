@@ -26,13 +26,13 @@ function CreateCourseInner() {
 
     const fetchCourses = async () => {
         try {
-            const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/admin/courses')
+            const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/courses')
             // backend doesn't expose this route yet; fallback to public /courses
             if (res.status === 200) {
                 const data = await res.json()
                 setCourses(data)
             } else {
-                const pub = await fetch(process.env.NEXT_PUBLIC_API_URL + '/courses')
+                const pub = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/courses')
                 const d = await pub.json()
                 setCourses(d)
             }
@@ -45,7 +45,7 @@ function CreateCourseInner() {
         form.append('resourceType', resourceType);
         const token = getToken()
         if (!token) throw new Error('Not authenticated')
-        const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/admin/upload', { method: 'POST', body: form, headers: { Authorization: 'Bearer ' + token } })
+        const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/upload', { method: 'POST', body: form, headers: { Authorization: 'Bearer ' + token } })
         return res.json();
     }
 
@@ -81,7 +81,7 @@ function CreateCourseInner() {
             if (!token) throw new Error('Not authenticated')
 
             // create course first
-            const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/admin/courses', {
+            const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/courses', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, thumbnail: thumbUrl, price, lessons: [] })
             })
             const data = await res.json()

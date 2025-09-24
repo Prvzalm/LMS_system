@@ -14,10 +14,10 @@ function YourCoursesInner() {
 
     const fetchCourses = async () => {
         try {
-            const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/admin/courses')
+            const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/courses')
             if (res.ok) setCourses(await res.json())
             else {
-                const pub = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/courses')
+                const pub = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/courses')
                 setCourses(await pub.json())
             }
         } catch (e) { console.error(e) }

@@ -42,7 +42,7 @@ backend/.env
 
 frontend/.env.local
 
-    NEXT_PUBLIC_API_URL=http://localhost:4000/api
+    NEXT_PUBLIC_API_URL=http://localhost:4000
 
 Notes on next steps and integration
 
