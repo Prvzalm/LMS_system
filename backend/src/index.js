@@ -18,7 +18,7 @@ dotenv.config();
 const app = express();
 app.use(express.static(path.join(__dirname, '/frontend')));
 app.use(cors({
-    origin: 'https://lms-system-ten.vercel.app',
+    origin: 'https://lms-system-64mu1bnkf-parvezalam.vercel.app',
     credentials: true
 }));
 app.use(express.json());
