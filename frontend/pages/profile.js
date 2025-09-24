@@ -8,9 +8,13 @@ import Container from '../components/ui/Container'
 export default function ProfilePage() {
     const router = useRouter()
     const [user, setUser] = useStore(state => [state.user, state.setUser])
+    const userLoading = useStore(state => state.userLoading)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        // Wait for authentication check to complete
+        if (userLoading) return
+
         // rely on global store user populated by _app.js; if not present, do a fast token check
         if (user) return
         // if there's no token locally, redirect immediately to avoid waiting
@@ -26,9 +30,9 @@ export default function ProfilePage() {
         } catch (e) {
             router.replace('/login')
         }
-    }, [user])
+    }, [user, userLoading, router])
 
-    if (loading || !user) return <Container>Loading...</Container>
+    if (loading || !user || userLoading) return <Container>Loading...</Container>
 
     return (
         <Container>

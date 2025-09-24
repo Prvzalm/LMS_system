@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import RequireAdmin from '../../components/RequireAdmin'
 import AdminLayout from '../../components/admin/AdminLayout'
 import { authFetch, getToken } from '../../utils/auth'
+import { useStore } from '../../store/useStore'
 import CourseCard from '../../components/CourseCard'
 import CourseEditModal from '../../components/CourseEditModal'
 
@@ -21,8 +22,13 @@ function CreateCourseInner() {
     const [courses, setCourses] = useState([])
     const [editingCourse, setEditingCourse] = useState(null)
     const [lessons, setLessons] = useState([])
+    const userLoading = useStore(state => state.userLoading)
 
-    useEffect(() => { fetchCourses() }, [])
+    useEffect(() => {
+        if (!userLoading) {
+            fetchCourses()
+        }
+    }, [userLoading])
 
     const fetchCourses = async () => {
         try {

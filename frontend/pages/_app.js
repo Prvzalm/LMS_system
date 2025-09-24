@@ -12,18 +12,23 @@ import Toast from '../components/ui/Toast'
 
 function MyApp({ Component, pageProps, router }) {
     const setUser = useStore(state => state.setUser)
+    const setUserLoading = useStore(state => state.setUserLoading)
     const initCurrency = useStore(state => state.initCurrency)
 
     // hydrate user once on client when app mounts to avoid repeated token checks
     useEffect(() => {
         const token = getToken()
-        if (!token) return
+        if (!token) {
+            setUserLoading(false) // No token, auth check complete
+            return
+        }
         (async () => {
             try {
                 const res = await authFetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/auth/me')
                 const data = await res.json()
                 if (data && data.user) setUser(data.user)
             } catch (e) { /* ignore - user remains null */ }
+            setUserLoading(false) // Auth check complete
         })()
     }, [])
 

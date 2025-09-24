@@ -16,12 +16,14 @@ export default function ShadcnAuthForm({ mode = 'login', admin = false }) {
     const isSignup = mode === 'signup'
 
     const setUser = useStore(state => state.setUser)
+    const setUserLoading = useStore(state => state.setUserLoading)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
         try {
-            const url = (process.env.NEXT_PUBLIC_API_URL || '') + (isSignup ? '/api/auth/signup' : '/api/auth/login')
+            const endpoint = admin ? '/api/auth/admin-login' : (isSignup ? '/api/auth/signup' : '/api/auth/login')
+            const url = (process.env.NEXT_PUBLIC_API_URL || '') + endpoint
             const body = isSignup ? { name, email, password } : { email, password }
             const res = await fetch(url, {
                 method: 'POST',
@@ -31,6 +33,8 @@ export default function ShadcnAuthForm({ mode = 'login', admin = false }) {
             const data = await res.json()
             if (data.token) {
                 setToken(data.token)
+                // Set loading state while fetching user data
+                setUserLoading(true)
                 // Always fetch user data from /me to get complete profile including isAdmin
                 try {
                     const me = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/auth/me', { headers: { Authorization: 'Bearer ' + data.token } })
@@ -39,6 +43,7 @@ export default function ShadcnAuthForm({ mode = 'login', admin = false }) {
                         if (ju.user) setUser(ju.user)
                     }
                 } catch (e) { }
+                setUserLoading(false) // Done loading user data
                 toast.success(isSignup ? 'Account created' : 'Signed in')
                 // after auth, go to dashboard or admin area when appropriate
                 const target = admin ? '/admin/dashboard' : (isSignup ? '/dashboard' : (router.pathname.startsWith('/admin') ? '/admin/dashboard' : '/dashboard'))

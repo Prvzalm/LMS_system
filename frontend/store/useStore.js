@@ -34,7 +34,9 @@ export const useStore = create((set) => ({
 
     // authenticated user (client-only, hydrated from token)
     user: null,
+    userLoading: true, // true initially, set to false after auth check
     setUser: (u) => set(() => ({ user: u })),
+    setUserLoading: (loading) => set(() => ({ userLoading: loading })),
 
     // toast helpers (light wrapper that will call react-hot-toast from components)
     // We store a small queue for programs that prefer reading store; primarily use showToast()

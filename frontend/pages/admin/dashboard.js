@@ -7,13 +7,19 @@ import Container from '../../components/ui/Container'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 import { authFetch } from '../../utils/auth'
+import { useStore } from '../../store/useStore'
 
 const fetcher = url => authFetch(url).then(r => r.json())
 
 function AdminDashboard() {
-    const { data, error } = useSWR((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/stats', fetcher)
+    const userLoading = useStore(state => state.userLoading)
+    const { data, error } = useSWR(
+        userLoading ? null : ((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/stats'),
+        fetcher
+    )
 
-    if (error) return <Container>Failed to load</Container>
+    if (userLoading) return <Container>Loading admin dashboard...</Container>
+    if (error) return <Container>Failed to load admin stats</Container>
     return (
         <>
             <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>

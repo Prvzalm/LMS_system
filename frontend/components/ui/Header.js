@@ -7,6 +7,7 @@ import toast from 'react-hot-toast'
 
 export default function Header({ isHome }) {
     const [user, setUser] = useStore(state => [state.user, state.setUser])
+    const setUserLoading = useStore(state => state.setUserLoading)
     const dark = useStore(state => state.dark)
     const setDark = useStore(state => state.setDark)
     const initDark = useStore(state => state.initDark)
@@ -32,6 +33,7 @@ export default function Header({ isHome }) {
     const handleLogout = () => {
         removeToken()
         try { setUser(null) } catch (e) { }
+        try { setUserLoading(false) } catch (e) { }
         try { toast.success('Logged out') } catch (e) { }
         if (typeof window !== 'undefined') window.location.href = '/'
     }

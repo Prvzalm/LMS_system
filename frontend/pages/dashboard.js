@@ -9,12 +9,16 @@ import { useRouter } from 'next/router'
 
 export default function Dashboard() {
     const user = useStore(state => state.user)
+    const userLoading = useStore(state => state.userLoading)
     const convertPrice = useStore(state => state.convertPrice)
     const currencySymbol = useStore(state => state.currencySymbol)
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Don't load courses until authentication check is complete
+        if (userLoading) return;
+
         ; (async () => {
             setLoading(true)
             try {
@@ -47,9 +51,9 @@ export default function Dashboard() {
             } catch (e) { }
             setLoading(false)
         })()
-    }, [user]);
+    }, [user, userLoading]);
 
-    if (loading) return <div className="text-center py-12">Loading your courses...</div>
+    if (loading || userLoading) return <div className="text-center py-12">Loading your courses...</div>
     if (!user) return (
         <div className="text-center py-12">
             <h1 className="text-3xl font-bold mb-4 text-white">Your Dashboard</h1>

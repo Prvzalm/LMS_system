@@ -10,11 +10,15 @@ import Button from '../components/ui/Button'
 export default function SettingsPage() {
     const router = useRouter()
     const [user, setUser] = useStore(state => [state.user, state.setUser])
+    const userLoading = useStore(state => state.userLoading)
     const [dark, setDark] = useStore(state => [state.dark, state.setDark])
     const [currency, currencySymbol] = useStore(state => [state.currency, state.currencySymbol])
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        // Wait for authentication check to complete
+        if (userLoading) return
+
         // Check authentication
         if (!user) {
             const token = getToken()
@@ -23,7 +27,7 @@ export default function SettingsPage() {
                 return
             }
         }
-    }, [user])
+    }, [user, userLoading, router])
 
     const handleUpdateProfile = async (updates) => {
         setLoading(true)
@@ -47,7 +51,7 @@ export default function SettingsPage() {
         setLoading(false)
     }
 
-    if (!user) return <Container>Loading...</Container>
+    if (!user || userLoading) return <Container>Loading...</Container>
 
     return (
         <Container>

@@ -67,7 +67,7 @@ router.post('/admin-login', async (req, res, next) => {
         const match = await user.comparePassword(password);
         if (!match) return res.status(400).json({ error: 'Invalid credentials' });
         const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
-        res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+        res.json({ token, user: { id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin } });
     } catch (err) { next(err); }
 });
 

@@ -7,6 +7,7 @@ import Link from 'next/link'
 export default function AuthSuccess() {
     const router = useRouter()
     const setUser = useStore(state => state.setUser)
+    const setUserLoading = useStore(state => state.setUserLoading)
 
     useEffect(() => {
         const { token } = router.query
@@ -18,6 +19,7 @@ export default function AuthSuccess() {
             }
             // fetch and hydrate user immediately so Header updates without refresh
             ; (async () => {
+                setUserLoading(true)
                 try {
                     const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/auth/me', { headers: { Authorization: 'Bearer ' + token } })
                     const data = await res.json()
@@ -25,6 +27,7 @@ export default function AuthSuccess() {
                         setUser(data.user)
                     }
                 } catch (e) { console.error(e) }
+                setUserLoading(false)
                 // redirect to dashboard regardless
                 router.replace('/dashboard')
             })()
