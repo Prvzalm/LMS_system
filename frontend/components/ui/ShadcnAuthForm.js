@@ -21,7 +21,7 @@ export default function ShadcnAuthForm({ mode = 'login', admin = false }) {
         e.preventDefault()
         setLoading(true)
         try {
-            const url = (process.env.NEXT_PUBLIC_API_URL || '') + (isSignup ? '/auth/signup' : '/auth/login')
+            const url = (process.env.NEXT_PUBLIC_API_URL || '') + (isSignup ? '/api/auth/signup' : '/api/auth/login')
             const body = isSignup ? { name, email, password } : { email, password }
             const res = await fetch(url, {
                 method: 'POST',
@@ -55,7 +55,7 @@ export default function ShadcnAuthForm({ mode = 'login', admin = false }) {
     }
 
     const handleSocial = (provider) => {
-        window.location.href = `${api}/auth/${provider}`
+        window.location.href = `/api/auth/${provider}`
     }
 
     return (
