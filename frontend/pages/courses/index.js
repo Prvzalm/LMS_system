@@ -4,7 +4,7 @@ import CourseCard from '../../components/CourseCard'
 const fetcher = url => fetch(url).then(r => r.json())
 
 export default function Courses() {
-    const { data: courses, error } = useSWR(process.env.NEXT_PUBLIC_API_URL + '/api/courses', fetcher)
+    const { data: courses, error } = useSWR((process.env.NEXT_PUBLIC_API_URL || '') + '/api/courses', fetcher)
     if (error) return <div className="p-8">Failed to load</div>
     if (!courses) return <div className="p-8">Loading...</div>
 

@@ -28,7 +28,7 @@ export default function SettingsPage() {
     const handleUpdateProfile = async (updates) => {
         setLoading(true)
         try {
-            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
+            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/user/profile`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)

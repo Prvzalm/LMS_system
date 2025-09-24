@@ -13,7 +13,7 @@ export default function VideoPlayer({ courseId, lessonIndex, onWatched }) {
         if (videoUrl || loading) return
         setLoading(true)
         try {
-            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/api/courses/${courseId}/lessons/${lessonIndex}/video`)
+            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/courses/${courseId}/lessons/${lessonIndex}/video`)
             const data = await res.json();
             if (data.videoUrl) {
                 setVideoUrl(data.videoUrl)
@@ -45,7 +45,7 @@ export default function VideoPlayer({ courseId, lessonIndex, onWatched }) {
 
     const saveProgress = async () => {
         try {
-            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${courseId}/lesson/${lessonIndex}`, {
+            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/progress/${courseId}/lesson/${lessonIndex}`, {
                 method: 'POST'
             })
             if (res.ok) {

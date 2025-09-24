@@ -14,7 +14,7 @@ router.get('/google/callback', passport.authenticate('google', { session: false,
     // Successful authentication; issue JWT and redirect or respond with token
     const token = jwt.sign({ id: req.user._id, isAdmin: req.user.isAdmin }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
     // If frontend expects a redirect, send token as query or set a cookie. We'll redirect to frontend with token in query param.
-    const redirectUrl = (process.env.FRONTEND_URL || 'http://localhost:3000') + `/auth/success?token=${token}`;
+    const redirectUrl = (process.env.FRONTEND_URL || '') + `/auth/success?token=${token}`;
     return res.redirect(redirectUrl);
 });
 

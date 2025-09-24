@@ -10,7 +10,7 @@ import Container from '../components/ui/Container'
 const fetcher = url => fetch(url).then(r => r.json())
 
 export default function Home() {
-    const { data: courses, error } = useSWR(process.env.NEXT_PUBLIC_API_URL + '/api/courses', fetcher)
+    const { data: courses, error } = useSWR((process.env.NEXT_PUBLIC_API_URL || '') + '/api/courses', fetcher)
     const query = useStore(state => state.query)
     const setQuery = useStore(state => state.setQuery)
 

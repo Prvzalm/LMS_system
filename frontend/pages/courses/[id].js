@@ -13,7 +13,7 @@ const fetcher = url => fetch(url).then(r => r.json());
 export default function CourseDetail() {
     const router = useRouter();
     const { id, lesson } = router.query;
-    const { data: course, error } = useSWR(id ? process.env.NEXT_PUBLIC_API_URL + '/api/courses/' + id : null, fetcher);
+    const { data: course, error } = useSWR(id ? (process.env.NEXT_PUBLIC_API_URL || '') + '/api/courses/' + id : null, fetcher);
     const [msg, setMsg] = useState('');
     const [mainImage, setMainImage] = useState(null)
     const [expandedLessons, setExpandedLessons] = useState({})
@@ -51,7 +51,7 @@ export default function CourseDetail() {
             return;
         }
         try {
-            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments/buy/${id}`, { method: 'POST' });
+            const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/payments/buy/${id}`, { method: 'POST' });
             const data = await res.json();
             if (data.success) {
                 alert('Course purchased successfully!');

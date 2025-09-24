@@ -32,7 +32,7 @@ function CreateCourseInner() {
                 const data = await res.json()
                 setCourses(data)
             } else {
-                const pub = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/courses')
+                const pub = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/courses')
                 const d = await pub.json()
                 setCourses(d)
             }
