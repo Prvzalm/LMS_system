@@ -54,9 +54,83 @@ router.put('/courses/:id', async (req, res, next) => {
 router.delete('/courses/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
+
+        // First get the course to access its videos
+        const course = await Course.findById(id);
+        if (!course) {
+            return res.status(404).json({ error: 'Course not found' });
+        }
+
+        // Collect all video public IDs to delete from Cloudinary
+        const videoPublicIds = [];
+
+        // Extract thumbnail public ID if exists
+        if (course.thumbnail) {
+            try {
+                // Cloudinary URLs typically look like: https://res.cloudinary.com/{cloud_name}/video/upload/v{version}/{public_id}.{format}
+                const thumbnailMatch = course.thumbnail.match(/\/upload\/(?:v\d+\/)?(.+)\.[a-zA-Z]+$/);
+                if (thumbnailMatch) {
+                    videoPublicIds.push(thumbnailMatch[1]);
+                }
+            } catch (e) {
+                console.error('Error parsing thumbnail URL:', e);
+            }
+        }
+
+        // Extract video public IDs from lessons
+        if (course.lessons && course.lessons.length > 0) {
+            course.lessons.forEach(lesson => {
+                if (lesson.videoUrl) {
+                    try {
+                        // Cloudinary URLs typically look like: https://res.cloudinary.com/{cloud_name}/video/upload/v{version}/{public_id}.{format}
+                        const videoMatch = lesson.videoUrl.match(/\/upload\/(?:v\d+\/)?(.+)\.[a-zA-Z]+$/);
+                        if (videoMatch) {
+                            videoPublicIds.push(videoMatch[1]);
+                        }
+                    } catch (e) {
+                        console.error('Error parsing video URL:', e);
+                    }
+                }
+            });
+        }
+
+        // Delete videos from Cloudinary
+        if (videoPublicIds.length > 0) {
+            try {
+                console.log(`Deleting ${videoPublicIds.length} videos from Cloudinary...`);
+                const cloudinary = require('../utils/cloudinary');
+
+                // Delete videos in batches to avoid rate limits
+                for (const publicId of videoPublicIds) {
+                    try {
+                        await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
+                        console.log(`Deleted video: ${publicId}`);
+                    } catch (error) {
+                        console.error(`Failed to delete video ${publicId}:`, error);
+                        // Continue with other deletions even if one fails
+                    }
+                }
+
+                console.log(`Finished deleting videos from Cloudinary`);
+            } catch (error) {
+                console.error('Error deleting videos from Cloudinary:', error);
+                // Continue with course deletion even if Cloudinary deletion fails
+            }
+        }
+
+        // Delete the course from MongoDB
         await Course.findByIdAndDelete(id);
-        res.json({ ok: true });
-    } catch (err) { next(err); }
+
+        console.log(`Course ${id} and associated media deleted successfully`);
+        res.json({
+            ok: true,
+            message: 'Course and associated videos deleted successfully',
+            deletedVideos: videoPublicIds.length
+        });
+    } catch (err) {
+        console.error('Error deleting course:', err);
+        next(err);
+    }
 });
 
 // Add lesson to course

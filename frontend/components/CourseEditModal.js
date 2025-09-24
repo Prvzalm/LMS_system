@@ -26,7 +26,7 @@ export default function CourseEditModal({ course, onClose, mode = 'edit' }) {
         form.append('resourceType', resourceType);
         const token = getToken()
         if (!token) throw new Error('Not authenticated')
-        const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/admin/upload', {
+        const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/upload', {
             method: 'POST', headers: { Authorization: 'Bearer ' + token }, body: form
         });
         return res.json();
@@ -92,7 +92,7 @@ export default function CourseEditModal({ course, onClose, mode = 'edit' }) {
             }
             const token = getToken()
             if (!token) throw new Error('Not authenticated')
-            const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/admin/courses/' + course._id, {
+            const res = await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/courses/' + course._id, {
                 method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ title, description, price, thumbnail: thumbUrl, images })
             })
             const data = await res.json()
@@ -111,7 +111,7 @@ export default function CourseEditModal({ course, onClose, mode = 'edit' }) {
                     setProgress((current / totalUploads) * 100)
                 }
                 if (ls.title && videoUrl) {
-                    await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/admin/courses/' + course._id + '/lessons', {
+                    await fetch((process.env.NEXT_PUBLIC_API_URL || '') + '/api/admin/courses/' + course._id + '/lessons', {
                         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ title: ls.title, videoUrl, description: ls.description })
                     })
                 }
